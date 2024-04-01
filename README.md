@@ -4,32 +4,34 @@
 
 ## Intalação e Uso
 
-1. Instale o aplicativo usando:
+1. Clone o repositório
+2. De Checkout para o branch desejado (Main ou Teste)
+3. Instale o aplicativo usando:
 
 ```
 composer install
 ```
 
-2. Configure as portas em .env. Caso esse arquivo não tenha sido criado altere de .env.example.
-3. Em config/database.php Certifique que o banco de dados esteja correto, Exemplo - MySQL:
+4. Configure as portas em .env. Caso esse arquivo não tenha sido criado altere de .env.example.
+5. Em config/database.php Certifique que o banco de dados esteja correto, Exemplo - MySQL:
 
 ```
 'default' => env('DB_CONNECTION', 'mysql')
 ```
 
-4. Migre as tabelas do banco de dados
+6. Migre as tabelas do banco de dados
 
 ```
 php artisan migrate
 ```
 
-5. Caso queira criar elementos na tabela para testes use:
+7. Caso queira criar elementos na tabela para testes use:
 
 ```
 php artisan db:seed
 ```
 
-6. Acesse o aplicativo em localhost:8000
+8. Acesse o aplicativo em localhost:8000
 ```
 Main -> localhost:8000/app
 Testes -> localhost:8000/teste
