@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ItemPedido;
+use App\Models\Produto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class ItemPedidoController extends Controller
      */
     public function index()
     {
-        //
+        $item_pedidos = ItemPedido::all();
+        return view('teste.item_pedidos.index', compact('item_pedidos'));
     }
 
     /**
@@ -35,32 +37,74 @@ class ItemPedidoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ItemPedido $itemPedido)
+    public function show($id)
     {
-        //
+        $itemPedido = ItemPedido::findOrFail($id);
+        return view('teste.item_pedidos.show', compact('itemPedido'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ItemPedido $itemPedido)
+    public function edit($id)
     {
-        //
+        $itemPedido = ItemPedido::findOrFail($id);
+        $produtos = Produto::all();
+        return view('teste.item_pedidos.edit', compact('itemPedido', 'produtos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ItemPedido $itemPedido)
+    public function update(Request $request, $id)
     {
-        //
+        // Validação dos dados do formulário
+        $request->validate([
+            'produto' => 'required|exists:produtos,id',
+            'quantidade' => 'required|integer|min:1',
+            // Adicione aqui outras regras de validação, se necessário
+        ]);
+        $produtos = Produto::all();
+        try {
+            // Encontra o item de pedido pelo ID
+            $itemPedido = ItemPedido::findOrFail($id);
+
+            // Atualiza os campos do item de pedido com os dados do formulário
+            $itemPedido->produto_id = $request->produto;
+            $itemPedido->quantidade = $request->quantidade;
+            // Atualize outros campos conforme necessário
+
+            // Salva as alterações no banco de dados
+            $itemPedido->save();
+
+            // Redireciona de volta para a página de detalhes do item de pedido
+            return view('teste.item_pedidos.show', compact('itemPedido', 'produtos'));
+        } 
+        catch (\Exception $e) {
+            // Em caso de erro, redireciona de volta para a página de edição
+            return view('teste.item_pedidos.edit', compact('itemPedido', 'produtos'));
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ItemPedido $itemPedido)
+    public function destroy($id)
     {
-        //
+        try {
+            // Encontra o item-pedido pelo ID
+            $itemPedido = ItemPedido::findOrFail($id);
+
+            // Exclui o item-pedido do banco de dados
+            $itemPedido->delete();
+
+            // Redireciona de volta para a lista de item-pedidos
+            return redirect()->route('item_pedidos.index')->with('success', 'item-pedido excluído com sucesso.');
+        } 
+        catch (\Exception $e) {
+            // Em caso de erro, redireciona de volta para a lista de item-pedidos
+            return redirect()->route('item_pedidos.index')->with('error', 'Erro ao excluir item_pedido.');
+        }
     }
 }

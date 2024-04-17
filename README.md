@@ -2,6 +2,10 @@
 
 > Aplicativo de delivery usando php e laravel, IFSP 2024 - PRWE7 - PROGRAMAÇÃO PARA WEB.
 
+## Apresentação
+
+> 27/05 - Seminário Laravel Nova + PDF.
+
 ## Intalação e Uso
 
 1. Clone o repositório
@@ -30,8 +34,24 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+8. Ligue o projeto no localhost
+```
+php artisan serve
+```
 
-8. Acesse o aplicativo em localhost:8000
+9. Instale o Vite e o bootstrap com:
+
+```
+npm install
+```
+
+10. Rode o servidor local com:
+
+```
+npm run dev
+```
+
+11. Acesse o aplicativo em localhost:8000
 ```
 Main -> localhost:8000/app
 Testes -> localhost:8000/teste
